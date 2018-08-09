@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import classes from'./App.css';
-import Person from './Person/Person';
+import Persons from '../components/Persons/Persons';
 import Radium, {StyleRoot} from 'radium'
+import Cockpit from '../components/Cockpit/Cockpit'
 
 class App extends Component {
   state = {
@@ -56,40 +56,23 @@ class App extends Component {
   render() {
 
     let persons = null;
-    let btnClass = '';
     if(this.state.showPersons){
       persons = (
-        <div>
-          {this.state.persons.map((person, index) => {
-            return <Person 
-            click={this.deletePersonHandler.bind(this, index)}
-            name={person.name} 
-            age={person.age}
-            key={person.id}
-            changed={(event) => this.changeNameHandler(event, person.id)} />
-          })}
-        </div>
+        <Persons
+          persons={this.state.persons}
+          clicked={this.deletePersonHandler}
+          changed={this.changeNameHandler} />
       );
-
-      btnClass = classes.Red;
-    }
-
-    const assignedClasses = [];
-    if(this.state.persons.length <= 2){
-      assignedClasses.push(classes.red);
-    }
-    if(this.state.persons.length <= 1){
-      assignedClasses.push(classes.bold);
     }
 
     return (
       <StyleRoot>
         <div className={classes.App}>
-          <h1>Hi, I'm a React App</h1>
-          <p className={assignedClasses.join(' ')}>This is really working</p>
-          {/* working but waste resources */}
-          {/* <button style={style} onClick={() => this.switchNameHandler('Yeral')}>Switch name</button> */}
-          <button className={btnClass} onClick={this.togglePersonHandler}>Switch name</button>
+          <Cockpit
+            appTitle={this.props.title}
+            showPersons={this.state.showPersons}
+            persons={this.state.persons}
+            clicked={this.togglePersonHandler} />
           {persons}
         </div>
       </StyleRoot>
